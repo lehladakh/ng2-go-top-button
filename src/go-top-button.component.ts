@@ -13,14 +13,26 @@ import {trigger, state, style, transition, animate} from '@angular/animations';
     styles: [
         `.go-top-button {
             position: fixed;
+            z-index: 9999;
             cursor: pointer;
+            display: none;
+            text-decoration: none;
+            text-align: center;
             outline: none;
+            width: 52px;
+            height: 52px;
+            right: 40px;
+            bottom: 40px;
+            font-size: 45px;
+            line-height: 46px;
+            opacity: 0.4;
         }
         
         .go-top-button:hover, .go-top-button:focus {
             background-color: rgba(0, 0, 0, 0.6);
             text-decoration: none;
             color: white;
+            opacity: 0.8
         }`
     ],
     animations: [
@@ -61,18 +73,10 @@ export class GoTopButton implements OnInit {
      * border-radius: string}}
      */
     private defaultStyles: any = {
-        'position': 'fixed',
-        'top': '50%',
-        'bottom': '50%',
-        'right': '0',
-        'width': '35px',
-        'height': '35px',
-        'line-height': '35px',
-        'text-decoration': 'none',
-        'color': 'white',
+        'color': '#f44336',
         'background': 'rgba(0, 0, 0, 0.3)',
-        'border': 'none',
-        'border-radius': '3px 0 0 3px'
+        'border-radius': '50%',
+
     };
 
     /**
@@ -110,7 +114,16 @@ export class GoTopButton implements OnInit {
      */
     @Input() acceleration: number = 0;
 
+    @Input() activeSite: any;
+
     ngOnInit(){
+        if (this.activeSite && this.activeSite.webSetting.hasOwnProperty('backToTop')) {
+            this.defaultStyles = {
+                'color': this.activeSite.webSetting.backToTop.color,
+                'background': this.activeSite.webSetting.backToTop.background,
+                'border-radius': this.activeSite.webSetting.backToTop.borderRadius + '%'
+            };
+        }
         this.validateInputs();
     }
 
@@ -199,7 +212,12 @@ export class GoTopButton implements OnInit {
      * @returns {{}&U&V}
      */
     getStyle = () => {
-        return Object.assign({}, this.defaultStyles, this.styles);
+        if (this.styles) {
+            return Object.assign({}, this.styles);
+        } else {
+            return Object.assign({}, this.defaultStyles);
+        }
+
     };
 
     /**

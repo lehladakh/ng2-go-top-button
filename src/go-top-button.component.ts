@@ -128,7 +128,7 @@ export class GoTopButton implements OnInit {
     }
 
     private validateInputs =() => {
-        var errorMessagePrefix = 'GoTopButton component input validation error: ';
+        let errorMessagePrefix = 'GoTopButton component input validation error: ';
 
         if(this.scrollDistance < 0){
             throw Error(errorMessagePrefix + "'scrollDistance' parameter must be greater or equal to 0");
